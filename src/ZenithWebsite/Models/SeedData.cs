@@ -13,9 +13,31 @@ namespace ZenithWebsite.Models
     {
         public static void Initialize(ZenithContext db)
         {
-            if (!db.Activities.Any())
+
+            if (!db.ApplicationRoles.Any())
             {
-               
+                db.ApplicationRoles.Add(new ApplicationRole
+                {
+                    RoleId = 1,
+                    RoleName = "Admin",
+                    Description = "Administrator"
+                });
+                db.ApplicationRoles.Add(new ApplicationRole
+                {
+                    RoleId = 2,
+                    RoleName = "Member",
+                    Description = "Member"
+                });
+                db.ApplicationRoles.Add(new ApplicationRole
+                {
+                    RoleId = 3,
+                    RoleName = "Guest",
+                    Description = "Guest"
+                });
+            }
+
+                if (!db.Activities.Any())
+            {
                 // Activity Seed Data
                 db.Activities.Add(new Activity
                 {

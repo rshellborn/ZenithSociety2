@@ -8,9 +8,10 @@ using ZenithWebsite.Models;
 namespace ZenithWebsite.Migrations
 {
     [DbContext(typeof(ZenithContext))]
-    partial class ZenithContextModelSnapshot : ModelSnapshot
+    [Migration("20170322195201_13")]
+    partial class _13
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -130,8 +131,6 @@ namespace ZenithWebsite.Migrations
 
                     b.Property<string>("NormalizedName")
                         .HasAnnotation("MaxLength", 256);
-
-                    b.Property<int>("RoleId");
 
                     b.Property<string>("RoleName");
 

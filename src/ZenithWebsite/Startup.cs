@@ -43,7 +43,7 @@ namespace ZenithWebsite
             services.AddDbContext<ZenithContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<ZenithContext>()
                 .AddDefaultTokenProviders();
 
