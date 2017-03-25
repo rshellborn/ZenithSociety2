@@ -11,57 +11,57 @@ using Microsoft.AspNetCore.Authorization;
 namespace ZenithWebsite.Controllers
 {
     [Produces("application/json")]
-    [Route("api/ActivitiesApi")]
-    public class ActivitiesApiController : Controller
+    [Route("api/RolesApi")]
+    public class ApplicationRoleApiController : Controller
     {
         private readonly ZenithContext _context;
 
-        public ActivitiesApiController(ZenithContext context)
+        public ApplicationRoleApiController(ZenithContext context)
         {
             _context = context;
         }
 
-        // GET: api/ActivitiesApi
+        // GET: api/RolesApi
         [HttpGet]
-        public IEnumerable<Activity> GetActivities()
+        public IEnumerable<ApplicationRole> GetRoles()
         {
-            return _context.Activities.Include(a => a.Events).ToList();
+            return _context.ApplicationRoles.Include(a => a.ApplicationUsers).ToList();
         }
 
-        // GET: api/ActivitiesApi/5
+        // GET: api/RolesApi/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetActivity([FromRoute] int id)
+        public async Task<IActionResult> GetRoles([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            Activity activity = await _context.Activities.SingleOrDefaultAsync(m => m.ActivityId == id);
+            ApplicationRole role = await _context.ApplicationRoles.SingleOrDefaultAsync(m => m.RoleId == id);
 
-            if (activity == null)
+            if (role == null)
             {
                 return NotFound();
             }
 
-            return Ok(activity);
+            return Ok(role);
         }
 
-        // PUT: api/ActivitiesApi/5
+        // PUT: api/RolesApi/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutActivity([FromRoute] int id, [FromBody] Activity activity)
+        public async Task<IActionResult> PutRole([FromRoute] int id, [FromBody] ApplicationRole role)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != activity.ActivityId)
+            if (id != role.RoleId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(activity).State = EntityState.Modified;
+            _context.Entry(role).State = EntityState.Modified;
 
             try
             {
@@ -69,7 +69,7 @@ namespace ZenithWebsite.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ActivityExists(id))
+                if (!ApplicationRoleExists(id))
                 {
                     return NotFound();
                 }
@@ -82,24 +82,24 @@ namespace ZenithWebsite.Controllers
             return NoContent();
         }
 
-        // POST: api/ActivitiesApi
+        // POST: api/RolesApi
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> PostActivity([FromBody] Activity activity)
+        public async Task<IActionResult> PostRole([FromBody] ApplicationRole role)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Activities.Add(activity);
+            _context.ApplicationRoles.Add(role);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (ActivityExists(activity.ActivityId))
+                if (ApplicationRoleExists(role.RoleId))
                 {
                     return new StatusCodeResult(StatusCodes.Status409Conflict);
                 }
@@ -109,33 +109,33 @@ namespace ZenithWebsite.Controllers
                 }
             }
 
-            return CreatedAtAction("GetActivity", new { id = activity.ActivityId }, activity);
+            return CreatedAtAction("GetApplicationRole", new { id = role.RoleId }, role);
         }
 
-        // DELETE: api/ActivitiesApi/5
+        // DELETE: api/RolesApi/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteActivity([FromRoute] int id)
+        public async Task<IActionResult> DeleteRole([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            Activity activity = await _context.Activities.SingleOrDefaultAsync(m => m.ActivityId == id);
-            if (activity == null)
+            ApplicationRole role = await _context.ApplicationRoles.SingleOrDefaultAsync(m => m.RoleId == id);
+            if (role == null)
             {
                 return NotFound();
             }
 
-            _context.Activities.Remove(activity);
+            _context.ApplicationRoles.Remove(role);
             await _context.SaveChangesAsync();
 
-            return Ok(activity);
+            return Ok(role);
         }
 
-        private bool ActivityExists(int id)
+        private bool ApplicationRoleExists(int id)
         {
-            return _context.Activities.Any(e => e.ActivityId == id);
+            return _context.ApplicationRoles.Any(e => e.RoleId == id);
         }
     }
 }

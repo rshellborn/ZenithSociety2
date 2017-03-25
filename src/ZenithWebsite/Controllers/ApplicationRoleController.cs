@@ -74,5 +74,9 @@ namespace ZenithWebsite.Controllers
             return RedirectToAction("Index");
         }
 
+        private bool ApplicationRoleExists(int id)
+        {
+            return _context.ApplicationRoles.Any(e => e.RoleId == id);
+        }
     }
 }

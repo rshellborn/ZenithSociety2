@@ -8,8 +8,8 @@ using ZenithWebsite.Models;
 namespace ZenithWebsite.Migrations
 {
     [DbContext(typeof(ZenithContext))]
-    [Migration("20170322194321_12")]
-    partial class _12
+    [Migration("20170325193720_SecondMigration")]
+    partial class SecondMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -103,6 +103,79 @@ namespace ZenithWebsite.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("OpenIddict.Models.OpenIddictApplication", b =>
+                {
+                    b.Property<string>("Id");
+
+                    b.Property<string>("ClientId");
+
+                    b.Property<string>("ClientSecret");
+
+                    b.Property<string>("DisplayName");
+
+                    b.Property<string>("LogoutRedirectUri");
+
+                    b.Property<string>("RedirectUri");
+
+                    b.Property<string>("Type");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId")
+                        .IsUnique();
+
+                    b.ToTable("OpenIddictApplications");
+                });
+
+            modelBuilder.Entity("OpenIddict.Models.OpenIddictAuthorization", b =>
+                {
+                    b.Property<string>("Id");
+
+                    b.Property<string>("ApplicationId");
+
+                    b.Property<string>("Scope");
+
+                    b.Property<string>("Subject");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationId");
+
+                    b.ToTable("OpenIddictAuthorizations");
+                });
+
+            modelBuilder.Entity("OpenIddict.Models.OpenIddictScope", b =>
+                {
+                    b.Property<string>("Id");
+
+                    b.Property<string>("Description");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OpenIddictScopes");
+                });
+
+            modelBuilder.Entity("OpenIddict.Models.OpenIddictToken", b =>
+                {
+                    b.Property<string>("Id");
+
+                    b.Property<string>("ApplicationId");
+
+                    b.Property<string>("AuthorizationId");
+
+                    b.Property<string>("Subject");
+
+                    b.Property<string>("Type");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationId");
+
+                    b.HasIndex("AuthorizationId");
+
+                    b.ToTable("OpenIddictTokens");
+                });
+
             modelBuilder.Entity("ZenithWebsite.Models.Activity", b =>
                 {
                     b.Property<int>("ActivityId")
@@ -132,7 +205,7 @@ namespace ZenithWebsite.Migrations
                     b.Property<string>("NormalizedName")
                         .HasAnnotation("MaxLength", 256);
 
-                    b.Property<int>("NumOfUsers");
+                    b.Property<string>("RoleId");
 
                     b.Property<string>("RoleName");
 
@@ -149,6 +222,8 @@ namespace ZenithWebsite.Migrations
                     b.Property<string>("Id");
 
                     b.Property<int>("AccessFailedCount");
+
+                    b.Property<string>("ApplicationRoleId");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -174,14 +249,22 @@ namespace ZenithWebsite.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<string>("RoleId");
+
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
 
+                    b.Property<string>("UserId");
+
                     b.Property<string>("UserName")
                         .HasAnnotation("MaxLength", 256);
 
+                    b.Property<string>("UserNm");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationRoleId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -252,6 +335,31 @@ namespace ZenithWebsite.Migrations
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("OpenIddict.Models.OpenIddictAuthorization", b =>
+                {
+                    b.HasOne("OpenIddict.Models.OpenIddictApplication", "Application")
+                        .WithMany("Authorizations")
+                        .HasForeignKey("ApplicationId");
+                });
+
+            modelBuilder.Entity("OpenIddict.Models.OpenIddictToken", b =>
+                {
+                    b.HasOne("OpenIddict.Models.OpenIddictApplication", "Application")
+                        .WithMany("Tokens")
+                        .HasForeignKey("ApplicationId");
+
+                    b.HasOne("OpenIddict.Models.OpenIddictAuthorization", "Authorization")
+                        .WithMany("Tokens")
+                        .HasForeignKey("AuthorizationId");
+                });
+
+            modelBuilder.Entity("ZenithWebsite.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("ZenithWebsite.Models.ApplicationRole", "ApplicationRole")
+                        .WithMany("ApplicationUsers")
+                        .HasForeignKey("ApplicationRoleId");
                 });
 
             modelBuilder.Entity("ZenithWebsite.Models.Event", b =>

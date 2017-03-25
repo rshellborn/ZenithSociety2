@@ -33,7 +33,7 @@
                     <li><a asp-area="" asp-controller="Activities" asp-action="Index">Activities</a></li>
                     <li><a asp-area="" asp-controller="Events" asp-action="Index">Events</a></li>
                     <li><a asp-area="" asp-controller="ApplicationRole" asp-action="Index">Roles</a></li>
-                    <li><a asp-area="" asp-controller="UserRoles" asp-action="Index">Users</a></li>
+                    <li><a asp-area="" asp-controller="ApplicationUser" asp-action="Index">Users</a></li>
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
@@ -42,9 +42,6 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; 2017 - ZenithWebsite</p>
-        </footer>
     </div>
 
     <environment names="Development">

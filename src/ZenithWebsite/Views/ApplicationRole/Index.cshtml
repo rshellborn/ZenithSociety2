@@ -32,7 +32,10 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
+                @if (item.RoleName != "Admin")
+                {
                     <a asp-action="Delete" asp-route-id="@item.RoleId">Delete</a>               
+                }
                 </td>
             </tr>
         }

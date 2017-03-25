@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ZenithWebsite.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ZenithWebsite.Controllers
 {
@@ -83,6 +84,7 @@ namespace ZenithWebsite.Controllers
 
         // POST: api/EventsApi
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> PostEvent([FromBody] Event @event)
         {
             if (!ModelState.IsValid)

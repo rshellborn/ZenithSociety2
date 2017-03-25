@@ -13,6 +13,7 @@ namespace ZenithWebsite.Models
             : base(options) { }
 
         public DbSet<ApplicationRole> ApplicationRoles { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Activity> Activities { get; set; }
         public DbSet<Event> Events { get; set; }
 

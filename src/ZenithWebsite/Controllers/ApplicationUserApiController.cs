@@ -11,57 +11,57 @@ using Microsoft.AspNetCore.Authorization;
 namespace ZenithWebsite.Controllers
 {
     [Produces("application/json")]
-    [Route("api/ActivitiesApi")]
-    public class ActivitiesApiController : Controller
+    [Route("api/UsersApi")]
+    public class ApplicationUserApiController : Controller
     {
         private readonly ZenithContext _context;
 
-        public ActivitiesApiController(ZenithContext context)
+        public ApplicationUserApiController(ZenithContext context)
         {
             _context = context;
         }
 
-        // GET: api/ActivitiesApi
+        // GET: api/UsersApi
         [HttpGet]
-        public IEnumerable<Activity> GetActivities()
+        public IEnumerable<ApplicationUser> GetUsers()
         {
-            return _context.Activities.Include(a => a.Events).ToList();
+            return _context.ApplicationUsers.Include(e => e.ApplicationRole);
         }
 
-        // GET: api/ActivitiesApi/5
+        // GET: api/UsersApi/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetActivity([FromRoute] int id)
+        public async Task<IActionResult> GetUsers([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            Activity activity = await _context.Activities.SingleOrDefaultAsync(m => m.ActivityId == id);
+            ApplicationUser user = await _context.ApplicationUsers.SingleOrDefaultAsync(m => m.UserId == id);
 
-            if (activity == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return Ok(activity);
+            return Ok(user);
         }
 
-        // PUT: api/ActivitiesApi/5
+        // PUT: api/UsersApi/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutActivity([FromRoute] int id, [FromBody] Activity activity)
+        public async Task<IActionResult> PutUser([FromRoute] int id, [FromBody] ApplicationUser user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != activity.ActivityId)
+            if (id != user.UserId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(activity).State = EntityState.Modified;
+            _context.Entry(user).State = EntityState.Modified;
 
             try
             {
@@ -69,7 +69,7 @@ namespace ZenithWebsite.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ActivityExists(id))
+                if (!ApplicationUserExists(id))
                 {
                     return NotFound();
                 }
@@ -82,24 +82,24 @@ namespace ZenithWebsite.Controllers
             return NoContent();
         }
 
-        // POST: api/ActivitiesApi
+        // POST: api/UsersApi
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> PostActivity([FromBody] Activity activity)
+        public async Task<IActionResult> PostUser([FromBody] ApplicationUser user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Activities.Add(activity);
+            _context.ApplicationUsers.Add(user);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (ActivityExists(activity.ActivityId))
+                if (ApplicationUserExists(user.UserId))
                 {
                     return new StatusCodeResult(StatusCodes.Status409Conflict);
                 }
@@ -109,33 +109,33 @@ namespace ZenithWebsite.Controllers
                 }
             }
 
-            return CreatedAtAction("GetActivity", new { id = activity.ActivityId }, activity);
+            return CreatedAtAction("GetApplicationUser", new { id = user.UserId }, user);
         }
 
-        // DELETE: api/ActivitiesApi/5
+        // DELETE: api/UsersApi/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteActivity([FromRoute] int id)
+        public async Task<IActionResult> DeleteUser([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            Activity activity = await _context.Activities.SingleOrDefaultAsync(m => m.ActivityId == id);
-            if (activity == null)
+            ApplicationUser user = await _context.ApplicationUsers.SingleOrDefaultAsync(m => m.UserId == id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            _context.Activities.Remove(activity);
+            _context.ApplicationUsers.Remove(user);
             await _context.SaveChangesAsync();
 
-            return Ok(activity);
+            return Ok(user);
         }
 
-        private bool ActivityExists(int id)
+        private bool ApplicationUserExists(int id)
         {
-            return _context.Activities.Any(e => e.ActivityId == id);
+            return _context.ApplicationUsers.Any(e => e.UserId == id);
         }
     }
 }

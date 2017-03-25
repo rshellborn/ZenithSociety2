@@ -14,23 +14,39 @@ namespace ZenithWebsite.Models
         public static void Initialize(ZenithContext db)
         {
 
+            if (!db.ApplicationUsers.Any())
+            {
+                db.ApplicationUsers.Add(new ApplicationUser
+                {
+                    UserNm = "a",
+                    RoleId = "Admin"
+                });
+                db.ApplicationUsers.Add(new ApplicationUser
+                {
+                    UserNm = "m",
+                    RoleId = "Member"
+                });
+                db.ApplicationUsers.Add(new ApplicationUser
+                {
+                    UserNm = "k",
+                    RoleId = "Guest"
+                });
+            }
+
             if (!db.ApplicationRoles.Any())
             {
                 db.ApplicationRoles.Add(new ApplicationRole
                 {
-                    RoleId = 1,
                     RoleName = "Admin",
                     Description = "Administrator"
                 });
                 db.ApplicationRoles.Add(new ApplicationRole
                 {
-                    RoleId = 2,
                     RoleName = "Member",
                     Description = "Member"
                 });
                 db.ApplicationRoles.Add(new ApplicationRole
                 {
-                    RoleId = 3,
                     RoleName = "Guest",
                     Description = "Guest"
                 });

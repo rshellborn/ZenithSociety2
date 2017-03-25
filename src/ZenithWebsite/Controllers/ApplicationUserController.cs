@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,64 +9,46 @@ using ZenithWebsite.Models;
 
 namespace ZenithWebsite.Controllers
 {
-    public class EventsController : Controller
+    public class ApplicationUserController : Controller
     {
         private readonly ZenithContext _context;
 
-        public EventsController(ZenithContext context)
+        public ApplicationUserController(ZenithContext context)
         {
-            _context = context;    
+            _context = context;
         }
 
-        // GET: Events
+        // GET: ApplicationUsers
         public async Task<IActionResult> Index()
         {
-            var zenithContext = _context.Events.Include(e => e.Activity);
-            return View(await zenithContext.ToListAsync());
+            return View(await _context.ApplicationUsers.ToListAsync());
         }
 
-        // GET: Events/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var @event = await _context.Events.SingleOrDefaultAsync(m => m.EventId == id);
-            if (@event == null)
-            {
-                return NotFound();
-            }
-
-            return View(@event);
-        }
-
-        // GET: Events/Create
+        // GET: ApplicationUsers/Create
         public IActionResult Create()
         {
-            ViewData["ActivityId"] = new SelectList(_context.Activities, "Description", "Description");
+            ViewData["RoleId"] = new SelectList(_context.ApplicationRoles, "RoleName", "RoleName");
             return View();
         }
 
-        // POST: Events/Create
+        // POST: ApplicationUsers/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EventId,ActivityId,CreationDate,EnteredBy,EventFrom,EventTo,IsActive")] Event @event)
+        public async Task<IActionResult> Create([Bind("UserId, UserName, RoleId")] ApplicationUser user)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(@event);
+                _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewData["ActivityId"] = new SelectList(_context.Activities, "Description", "Description", @event.ActivityId);
-            return View(@event);
+            ViewData["RoleId"] = new SelectList(_context.ApplicationRoles, "RoleName", "RoleName", user.RoleId);
+            return View(user);
         }
 
-        // GET: Events/Edit/5
+        // GET: ApplicationUsers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,23 +56,24 @@ namespace ZenithWebsite.Controllers
                 return NotFound();
             }
 
-            var @event = await _context.Events.SingleOrDefaultAsync(m => m.EventId == id);
-            if (@event == null)
+            var user = await _context.ApplicationUsers.SingleOrDefaultAsync(m => m.UserId == id);
+            if (user == null)
             {
                 return NotFound();
             }
-            ViewData["ActivityId"] = new SelectList(_context.Activities, "ActivityId", "Description", @event.ActivityId);
-            return View(@event);
+
+            ViewData["RoleId"] = new SelectList(_context.ApplicationRoles, "RoleName", "RoleName", user.RoleId);
+            return View(user);
         }
 
-        // POST: Events/Edit/5
+        // POST: ApplicationUsers/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EventId,ActivityId,CreationDate,EnteredBy,EventFrom,EventTo,IsActive")] Event @event)
+        public async Task<IActionResult> Edit(int id, [Bind("UserId, UserName, RoleId")] ApplicationUser user)
         {
-            if (id != @event.EventId)
+            if (id != user.UserId)
             {
                 return NotFound();
             }
@@ -99,12 +82,12 @@ namespace ZenithWebsite.Controllers
             {
                 try
                 {
-                    _context.Update(@event);
+                    _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EventExists(@event.EventId))
+                    if (!ApplicationUserExists(user.UserId))
                     {
                         return NotFound();
                     }
@@ -115,11 +98,12 @@ namespace ZenithWebsite.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["ActivityId"] = new SelectList(_context.Activities, "ActivityId", "Description", @event.ActivityId);
-            return View(@event);
+
+            ViewData["RoleId"] = new SelectList(_context.ApplicationRoles, "RoleName", "RoleName", user.RoleId);
+            return View(user);
         }
 
-        // GET: Events/Delete/5
+        // GET: ApplicationUsers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -127,29 +111,30 @@ namespace ZenithWebsite.Controllers
                 return NotFound();
             }
 
-            var @event = await _context.Events.SingleOrDefaultAsync(m => m.EventId == id);
-            if (@event == null)
+            var user = await _context.ApplicationUsers.SingleOrDefaultAsync(m => m.UserId == id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return View(@event);
+            return View(user);
         }
 
-        // POST: Events/Delete/5
+        // POST: ApplicationUsers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var @event = await _context.Events.SingleOrDefaultAsync(m => m.EventId == id);
-            _context.Events.Remove(@event);
+            var user = await _context.ApplicationUsers.SingleOrDefaultAsync(m => m.UserId == id);
+            _context.ApplicationUsers.Remove(user);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        private bool EventExists(int id)
+        private bool ApplicationUserExists(int id)
         {
-            return _context.Events.Any(e => e.EventId == id);
+            return _context.ApplicationUsers.Any(e => e.UserId == id);
         }
+
     }
 }

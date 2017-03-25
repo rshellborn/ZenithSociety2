@@ -1,4 +1,4 @@
-@model ZenithWebsite.Models.Activity
+﻿@model ZenithWebsite.Models.ApplicationUser
 
 @{
     ViewData["Title"] = "Edit";
@@ -11,17 +11,21 @@
         <h4>Activity</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input type="hidden" asp-for="ActivityId" />
+        <input type="hidden" asp-for="UserId" />
         <div class="form-group">
-            <label asp-for="Description" class="col-md-2 control-label"></label>
+            <label asp-for="UserNm" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger" />
+                <input asp-for="UserNm" class="form-control" />
+                <span asp-validation-for="UserNm" class="text-danger" />
             </div>
         </div>
-
-        @Html.Hidden("CreationDate", DateTime.Now)
-
+        <div class="form-group">
+            <label asp-for="RoleId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="RoleId" class="form-control" asp-items="ViewBag.RoleId"></select>
+                <span asp-validation-for="RoleId" class="text-danger" />
+            </div>
+        </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
