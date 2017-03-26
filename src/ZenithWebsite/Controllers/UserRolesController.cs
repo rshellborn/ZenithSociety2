@@ -30,7 +30,7 @@ namespace ZenithWebsite.Controllers
         public async Task<ActionResult> Index()
         {
             // Get users 
-            var users = _userManager.Users;
+            var users = _userManager.Users.ToList();
 
             // Convert into a view model 
             var usersView = new List<UserRolesViewModel>();
