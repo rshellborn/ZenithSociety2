@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ZenithWebsite.Models;
+using ZenithWebsite.Models.AccountViewModels;
 using OpenIddict.Core;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,32 @@ namespace ZenithWebSite.Controllers
             _identityOptions = identityOptions;
             _signInManager = signInManager;
             _userManager = userManager;
+        }
+
+        [HttpPost("~/connect/register"), Produces("application/json")]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Username, Email = model.Email };
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    // automatically assign user to "Member"
+                    await this._userManager.AddToRoleAsync(user, "Member");
+
+                    return Ok(new JsonResult("User created a new account with password.")
+                    {
+                        StatusCode = 200
+                    });
+                }
+            }
+
+            return BadRequest(new OpenIdConnectResponse
+            {
+                Error = OpenIdConnectConstants.Errors.InvalidRequest,
+                ErrorDescription = "Error! User Registration was not successful."
+            });
         }
 
         [HttpPost("~/connect/token"), Produces("application/json")]

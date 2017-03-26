@@ -47,7 +47,6 @@ namespace ZenithWebsite
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
                 options.UseOpenIddict();
                 });
-    
 
             // Add service and create Policy with options
             services.AddCors(options =>
@@ -57,9 +56,7 @@ namespace ZenithWebsite
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials());
-            });
-
-            
+            });          
 
             services.AddOpenIddict(options =>
             {
@@ -93,6 +90,12 @@ namespace ZenithWebsite
                 .AddEntityFrameworkStores<ZenithContext>()
                 .AddDefaultTokenProviders();
 
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
+                options.ClaimsIdentity.UserIdClaimType = OpenIdConnectConstants.Claims.Subject;
+                options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
