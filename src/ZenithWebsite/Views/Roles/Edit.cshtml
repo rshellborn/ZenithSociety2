@@ -1,33 +1,35 @@
-﻿@model ZenithWebsite.Models.ApplicationRole
+@model ZenithWebsite.Models.RoleViewModels.IdentityRoleViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit Role";
 }
 
-<h2>Create</h2>
+<h2>@ViewData["Title"]</h2>
 
-<form asp-action="Create">
+<form asp-action="Edit">
     <div class="form-horizontal">
-        <h4>Role</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="RoleId" />
+
         <div class="form-group">
-            <label asp-for="RoleName" class="col-md-2 control-label"></label>
+            <label asp-for="RoleName" class="control-label col-md-2"></label>
             <div class="col-md-10">
-                <input asp-for="RoleName" class="form-control" />
+                <input asp-for="RoleName" class="form-control">
                 <span asp-validation-for="RoleName" class="text-danger" />
             </div>
         </div>
+
         <div class="form-group">
-            <label asp-for="Description" class="col-md-2 control-label"></label>
+            <label asp-for="NormalizedName" class="control-label col-md-2"></label>
             <div class="col-md-10">
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger" />
+                <input asp-for="NormalizedName" class="form-control" disabled>
             </div>
         </div>
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
     </div>

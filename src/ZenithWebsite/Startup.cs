@@ -14,6 +14,7 @@ using ZenithWebsite.Services;
 using Newtonsoft.Json;
 using AspNet.Security.OpenIdConnect.Primitives;
 
+
 namespace ZenithWebsite
 {
     public class Startup
@@ -46,10 +47,7 @@ namespace ZenithWebsite
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
                 options.UseOpenIddict();
                 });
-
-            services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<ZenithContext>()
-                .AddDefaultTokenProviders();      
+    
 
             // Add service and create Policy with options
             services.AddCors(options =>
@@ -90,12 +88,10 @@ namespace ZenithWebsite
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
-            services.Configure<IdentityOptions>(options =>
-            {
-                options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
-                options.ClaimsIdentity.UserIdClaimType = OpenIdConnectConstants.Claims.Subject;
-                options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
-            });
+            // Identity
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ZenithContext>()
+                .AddDefaultTokenProviders();
 
         }
 
@@ -142,5 +138,60 @@ namespace ZenithWebsite
             SeedData.Initialize(context);
 
         }
+
+       //private async void createRolesandUsers(ZenithContext context, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
+       // {
+       //     // creating Creating Member role    
+       //     if (!await roleManager.RoleExistsAsync("Member"))
+       //     {
+       //         var role = new IdentityRole();
+       //         role.Name = "Member";
+       //         var roleResult = await roleManager.CreateAsync(role);
+
+       //         // Here we create a Admin super user who will maintain the website                  
+       //         var user = new ApplicationUser();
+       //         user.UserName = "m";
+       //         user.Email = "m@m.c";
+       //         string userPWD = "P@$$w0rd";
+
+       //         var chkUser = await userManager.CreateAsync(user, userPWD);
+
+       //         if (chkUser.Succeeded)
+       //         {
+       //             var result1 = await userManager.AddToRoleAsync(user, "Member");
+       //         }
+       //     }
+
+       //     // Create first Admin Role and creating a default Admin User   
+       //     var adminExists = await roleManager.RoleExistsAsync("Admin");
+       //     if (!adminExists)
+       //     {
+       //         // first we create Admin role
+       //         var role = new IdentityRole();
+       //         role.Name = "Admin";
+       //         var roleResult = await roleManager.CreateAsync(role);
+
+       //         // Here we create a Admin super user who will maintain the website                  
+       //         var user = new ApplicationUser();
+       //         user.UserName = "ZenithAdmin";
+       //         user.Email = "admin@zenith.com";
+       //         string userPWD = "!@#123QWEqwe";
+       //         // Create an admin user for marking 
+       //         var user2 = new ApplicationUser();
+       //         user2.UserName = "a";
+       //         user2.Email = "a@a.a";
+       //         string user2PWD = "P@$$w0rd";
+
+       //         //Add default User to Role Admin  
+       //         var chkUser = await userManager.CreateAsync(user, userPWD);
+       //         var chkUser2 = await userManager.CreateAsync(user2, user2PWD);
+       //         if (chkUser.Succeeded)
+       //         {
+       //             var result1 = await userManager.AddToRolesAsync(user, new string[] { "Admin", "Member" });
+       //             var result2 = await userManager.AddToRoleAsync(user2, "Admin");
+       //         }
+       //     }
+        //}
+
     }
 }

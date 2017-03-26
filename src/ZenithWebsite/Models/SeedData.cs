@@ -14,45 +14,7 @@ namespace ZenithWebsite.Models
         public static void Initialize(ZenithContext db)
         {
 
-            if (!db.ApplicationUsers.Any())
-            {
-                db.ApplicationUsers.Add(new ApplicationUser
-                {
-                    UserNm = "a",
-                    RoleId = "Admin"
-                });
-                db.ApplicationUsers.Add(new ApplicationUser
-                {
-                    UserNm = "m",
-                    RoleId = "Member"
-                });
-                db.ApplicationUsers.Add(new ApplicationUser
-                {
-                    UserNm = "k",
-                    RoleId = "Guest"
-                });
-            }
-
-            if (!db.ApplicationRoles.Any())
-            {
-                db.ApplicationRoles.Add(new ApplicationRole
-                {
-                    RoleName = "Admin",
-                    Description = "Administrator"
-                });
-                db.ApplicationRoles.Add(new ApplicationRole
-                {
-                    RoleName = "Member",
-                    Description = "Member"
-                });
-                db.ApplicationRoles.Add(new ApplicationRole
-                {
-                    RoleName = "Guest",
-                    Description = "Guest"
-                });
-            }
-
-                if (!db.Activities.Any())
+            if (!db.Activities.Any())
             {
                 // Activity Seed Data
                 db.Activities.Add(new Activity

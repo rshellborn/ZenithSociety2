@@ -8,7 +8,7 @@ using ZenithWebsite.Models;
 namespace ZenithWebsite.Migrations
 {
     [DbContext(typeof(ZenithContext))]
-    [Migration("20170325135848_FirstMigration")]
+    [Migration("20170326012931_FirstMigration")]
     partial class FirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -197,17 +197,11 @@ namespace ZenithWebsite.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
-                    b.Property<string>("Description");
-
                     b.Property<string>("Name")
                         .HasAnnotation("MaxLength", 256);
 
                     b.Property<string>("NormalizedName")
                         .HasAnnotation("MaxLength", 256);
-
-                    b.Property<int>("RoleId");
-
-                    b.Property<string>("RoleName");
 
                     b.HasKey("Id");
 
@@ -222,8 +216,6 @@ namespace ZenithWebsite.Migrations
                     b.Property<string>("Id");
 
                     b.Property<int>("AccessFailedCount");
-
-                    b.Property<string>("ApplicationRoleId");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -249,22 +241,14 @@ namespace ZenithWebsite.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<int>("RoleId");
-
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
 
-                    b.Property<int>("UserId");
-
                     b.Property<string>("UserName")
                         .HasAnnotation("MaxLength", 256);
 
-                    b.Property<string>("UserNm");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationRoleId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -353,13 +337,6 @@ namespace ZenithWebsite.Migrations
                     b.HasOne("OpenIddict.Models.OpenIddictAuthorization", "Authorization")
                         .WithMany("Tokens")
                         .HasForeignKey("AuthorizationId");
-                });
-
-            modelBuilder.Entity("ZenithWebsite.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("ZenithWebsite.Models.ApplicationRole", "ApplicationRole")
-                        .WithMany("ApplicationUsers")
-                        .HasForeignKey("ApplicationRoleId");
                 });
 
             modelBuilder.Entity("ZenithWebsite.Models.Event", b =>
