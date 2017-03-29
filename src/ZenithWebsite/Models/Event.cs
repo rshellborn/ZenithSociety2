@@ -23,7 +23,7 @@ namespace ZenithWebsite.Models
         [Display(Name = "Creator")]
         public string EnteredBy { get; set; }
 
-        [Display(Name = "Activity ID")]
+        [Display(Name = "Activity")]
         public int ActivityId { get; set; }
 
         [Display(Name = "Date Created")]

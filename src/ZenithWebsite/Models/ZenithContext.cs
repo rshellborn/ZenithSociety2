@@ -11,6 +11,7 @@ namespace ZenithWebsite.Models
     {
         public ZenithContext(DbContextOptions<ZenithContext> options)
             : base(options) { }
+
         public DbSet<Activity> Activities { get; set; }
         public DbSet<Event> Events { get; set; }
 

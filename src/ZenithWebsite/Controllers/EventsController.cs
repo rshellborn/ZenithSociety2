@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ZenithWebsite.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ZenithWebsite.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class EventsController : Controller
     {
         private readonly ZenithContext _context;
@@ -54,15 +56,17 @@ namespace ZenithWebsite.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EventId,ActivityId,CreationDate,EnteredBy,EventFrom,EventTo,IsActive")] Event @event)
+        public async Task<IActionResult> Create([Bind("EventId,ActivityId,CreationDate,EventFrom,EventTo,IsActive")] Event @event)
         {
             if (ModelState.IsValid)
             {
+                @event.EnteredBy = HttpContext.User.Identity.Name;
+
                 _context.Add(@event);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewData["ActivityId"] = new SelectList(_context.Activities, "Description", "Description", @event.ActivityId);
+            ViewData["ActivityId"] = new SelectList(_context.Activities, "ActivityId", "Description", @event.ActivityId);
             return View(@event);
         }
 

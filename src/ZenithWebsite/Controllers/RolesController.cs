@@ -11,6 +11,7 @@ using ZenithWebsite.Models.RoleViewModels;
 
 namespace ZenithWebsite.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class RolesController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -23,17 +24,14 @@ namespace ZenithWebsite.Controllers
         // GET: Roles
         public ActionResult Index()
         {
-            // Get all the roles 
             var roles = _roleManager.Roles.ToList();
 
-            // Convert the roles to something we can use and edit 
             List<IdentityRoleViewModel> rolesView = new List<IdentityRoleViewModel>();
             foreach (IdentityRole r in roles)
             {
                 rolesView.Add(getViewModelFromModel(r));
             }
 
-            // Display
             return View(rolesView);
         }
 
@@ -62,7 +60,6 @@ namespace ZenithWebsite.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Convert view model to a model  
                 var newRole = new IdentityRole();
                 newRole.Name = roleView.RoleName;
                 var newRoleResult = await _roleManager.CreateAsync(newRole);
@@ -77,7 +74,6 @@ namespace ZenithWebsite.Controllers
                 }
             }
 
-            // If here, then an error occured. 
             return View(roleView);
         }
 
@@ -104,10 +100,9 @@ namespace ZenithWebsite.Controllers
                 role.Name = roleView.RoleName;
                 var result = await _roleManager.UpdateAsync(role);
 
-                // Fast exit if editing role 'admin'
                 if (role.NormalizedName == "ADMIN")
                 {
-                    ModelState.AddModelError(string.Empty, "Admin role cannot be edited");
+                    ModelState.AddModelError(string.Empty, "Admin cannot be edited");
                     return View(roleView);
                 }
 
@@ -151,7 +146,7 @@ namespace ZenithWebsite.Controllers
 
             if (role.NormalizedName == "ADMIN")
             {
-                ModelState.AddModelError(String.Empty, "Role 'Admin' cannot be deleted.");
+                ModelState.AddModelError(String.Empty, "Admin cannot be deleted.");
                 return View(viewModel);
             }
 

@@ -1,11 +1,11 @@
 @model ZenithWebsite.Models.UserRolesViewModel.EditUserRoleViewModel
 
 @{
-    ViewData["Title"] = "Remove Role from User";
+    ViewData["Title"] = "Delete Role";
 }
 
-<h2>@ViewData["Title"]</h2>
-
+<h2>Delete Role</h2>
+<br />
 <form asp-action="DeleteRole">
     <div class="form-horizontal">
         <hr />
@@ -29,7 +29,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Remove" class="btn btn-danger" />
+                <input type="submit" value="Remove" class="btn btn-default" />
             </div>
         </div>
     </div>

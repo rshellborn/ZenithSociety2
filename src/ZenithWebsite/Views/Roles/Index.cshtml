@@ -4,19 +4,20 @@
     ViewData["Title"] = "Roles";
 }
 
-<h2>@ViewData["Title"]</h2>
-
-<p>
-    <a asp-action="Create">Create New</a>
+<h2>Roles</h2>
+<br>
+<p class="create">
+    <a asp-action="Create">Add Role</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.RoleName)
+                @Html.DisplayNameFor(model => model.NormalizedName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NormalizedName)
+                @Html.DisplayNameFor(model => model.RoleName)
             </th>
             <th></th>
         </tr>
@@ -26,10 +27,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.RoleName)
+                    @Html.DisplayFor(modelItem => item.NormalizedName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.NormalizedName)
+                    @Html.DisplayFor(modelItem => item.RoleName)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.RoleId">Edit</a> |

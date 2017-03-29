@@ -48,3 +48,59 @@ textarea {
     display: none
   }
 }
+
+/* navbar */
+/* Changes the background color of the header*/
+.navbar {
+    background-color: #8b7d7b;
+}
+
+/* Changes the header title*/
+.navbar-inverse .navbar-brand {
+    color: #ffffff;
+}
+
+/* Changes the header menu*/
+.navbar-inverse .navbar-nav > li > a {
+  color: #ffffff;
+  font-size: 14.5px;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:focus {
+  color: #d8ee77;
+  background-color: transparent;
+}
+
+/* change color of the links */
+a {
+    color: #023ba0;
+}
+
+a:hover {
+    color: #a00262;
+}
+
+/* table */
+th {
+    text-align: center;
+    background-color: rgba(181, 200, 204, 0.8);
+    height: 35px;
+}
+
+td {
+    height: 34px;
+}
+
+table, th, td {
+    border: 2px solid black;
+}
+
+/* title */
+h2 {
+    margin-top: 30px;
+    text-align: center;
+    color:rgb(79, 55, 32);
+}
+
+

@@ -14,11 +14,11 @@ namespace ZenithWebsite.Models.RoleViewModels
         public string RoleId { get; set; }
 
         [Required]
-        [Display(Name = "Name")]
+        [Display(Name = "Description")]
         public string RoleName { get; set; }
 
         [ReadOnly(true)]
-        [Display(Name = "Normalized Name")]
+        [Display(Name = "Role Name")]
         public string NormalizedName { get; set; }
     }
 }

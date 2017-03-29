@@ -4,11 +4,10 @@
     ViewData["Title"] = "Edit";
 }
 
-<h2>Edit</h2>
-
+<h2>Edit Event</h2>
+<br />
 <form asp-action="Edit">
     <div class="form-horizontal">
-        <h4>Event</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="EventId" />
@@ -19,20 +18,9 @@
                 <span asp-validation-for="ActivityId" class="text-danger" />
             </div>
         </div>
-        <div class="form-group">
-            <label asp-for="CreationDate" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="CreationDate" class="form-control" />
-                <span asp-validation-for="CreationDate" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="EnteredBy" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="EnteredBy" class="form-control" />
-                <span asp-validation-for="EnteredBy" class="text-danger" />
-            </div>
-        </div>
+
+        @Html.Hidden("CreationDate", DateTime.Now)
+
         <div class="form-group">
             <label asp-for="EventFrom" class="col-md-2 control-label"></label>
             <div class="col-md-10">

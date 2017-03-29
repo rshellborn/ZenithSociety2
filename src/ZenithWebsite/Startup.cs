@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,7 +43,7 @@ namespace ZenithWebsite
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            //made a change here -Rachel
+
             services.AddDbContext<ZenithContext>(options => {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
                 options.UseOpenIddict();
@@ -99,7 +100,7 @@ namespace ZenithWebsite
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, ZenithContext context)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, ZenithContext context, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -140,61 +141,73 @@ namespace ZenithWebsite
 
             SeedData.Initialize(context);
 
+            // Create Roles and Users
+            RolesandUsers(context, roleManager, userManager);
+
         }
 
-       //private async void createRolesandUsers(ZenithContext context, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
-       // {
-       //     // creating Creating Member role    
-       //     if (!await roleManager.RoleExistsAsync("Member"))
-       //     {
-       //         var role = new IdentityRole();
-       //         role.Name = "Member";
-       //         var roleResult = await roleManager.CreateAsync(role);
+        public async Task<ClaimsIdentity> GetIdentity(string email, string password)
+        {
+            var result = await _signInManager.PasswordSignInAsync(email, password, false, lockoutOnFailure: false);
+            if (result.Succeeded)
+            {
+                var user = await _userManager.FindByEmailAsync(email);
+                var claims = await _userManager.GetClaimsAsync(user);
 
-       //         // Here we create a Admin super user who will maintain the website                  
-       //         var user = new ApplicationUser();
-       //         user.UserName = "m";
-       //         user.Email = "m@m.c";
-       //         string userPWD = "P@$$w0rd";
+                return new ClaimsIdentity(new GenericIdentity(email, "Token"), claims);
+            }
 
-       //         var chkUser = await userManager.CreateAsync(user, userPWD);
+            // Credentials are invalid, or account doesn't exist
+            return null;
+        }
+        private async void RolesandUsers(ZenithContext context, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
+        {
+            // Admin Role
+            var adminRoleExists = await roleManager.RoleExistsAsync("Admin");
+            if (!adminRoleExists)
+            {
+                // new Identity Role
+                var role = new IdentityRole();
+                role.Name = "Admin";
+                var roleResult = await roleManager.CreateAsync(role);
 
-       //         if (chkUser.Succeeded)
-       //         {
-       //             var result1 = await userManager.AddToRoleAsync(user, "Member");
-       //         }
-       //     }
+                // new Admin Role
+                var admin = new ApplicationUser();
+                admin.UserName = "a";
+                admin.Email = "a@a.a";
+                string adminPassword = "P@$$w0rd";
 
-       //     // Create first Admin Role and creating a default Admin User   
-       //     var adminExists = await roleManager.RoleExistsAsync("Admin");
-       //     if (!adminExists)
-       //     {
-       //         // first we create Admin role
-       //         var role = new IdentityRole();
-       //         role.Name = "Admin";
-       //         var roleResult = await roleManager.CreateAsync(role);
+                //Add "a" user to "Admin"  
+                var adminUser = await userManager.CreateAsync(admin, adminPassword);
+                if (adminUser.Succeeded)
+                {
+                    var adminresult = await userManager.AddToRoleAsync(admin, "Admin");
+                }
+            }
 
-       //         // Here we create a Admin super user who will maintain the website                  
-       //         var user = new ApplicationUser();
-       //         user.UserName = "ZenithAdmin";
-       //         user.Email = "admin@zenith.com";
-       //         string userPWD = "!@#123QWEqwe";
-       //         // Create an admin user for marking 
-       //         var user2 = new ApplicationUser();
-       //         user2.UserName = "a";
-       //         user2.Email = "a@a.a";
-       //         string user2PWD = "P@$$w0rd";
+            // Member Role
+            var memberRoleExists = await roleManager.RoleExistsAsync("Member");
+            if (!memberRoleExists)
+            {
+                // new Identity Role
+                var role = new IdentityRole();
+                role.Name = "Member";
+                var roleResult = await roleManager.CreateAsync(role);
 
-       //         //Add default User to Role Admin  
-       //         var chkUser = await userManager.CreateAsync(user, userPWD);
-       //         var chkUser2 = await userManager.CreateAsync(user2, user2PWD);
-       //         if (chkUser.Succeeded)
-       //         {
-       //             var result1 = await userManager.AddToRolesAsync(user, new string[] { "Admin", "Member" });
-       //             var result2 = await userManager.AddToRoleAsync(user2, "Admin");
-       //         }
-       //     }
-        //}
+                // new Member Role
+                var member = new ApplicationUser();
+                member.UserName = "m";
+                member.Email = "m@m.m";
+                string memberPassword = "P@$$w0rd";
+
+                //Add "m" user to "Member"  
+                var memberUser = await userManager.CreateAsync(member, memberPassword);
+                if (memberUser.Succeeded)
+                {
+                    var memberResult = await userManager.AddToRoleAsync(member, "Member");
+                }
+            }
+        }
 
     }
 }

@@ -44,10 +44,10 @@ namespace ZenithWebSite.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    // automatically assign user to "Member"
+                    // all the users are automatically registered as "Member"
                     await this._userManager.AddToRoleAsync(user, "Member");
 
-                    return Ok(new JsonResult("User created a new account with password.")
+                    return Ok(new JsonResult("Message: User Registration was successful")
                     {
                         StatusCode = 200
                     });
