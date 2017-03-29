@@ -37,7 +37,7 @@ namespace ZenithWebsite.Controllers
                 return BadRequest(ModelState);
             }
 
-            Activity activity = await _context.Activities.SingleOrDefaultAsync(m => m.ActivityId == id);
+            Activity activity = await _context.Activities.Include(a => a.Events).SingleOrDefaultAsync(m => m.ActivityId == id);
 
             if (activity == null)
             {

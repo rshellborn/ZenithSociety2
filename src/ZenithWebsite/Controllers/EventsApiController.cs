@@ -25,7 +25,27 @@ namespace ZenithWebsite.Controllers
         [HttpGet]
         public IEnumerable<Event> GetEvents()
         {
-            return _context.Events.Include(e => e.Activity);
+            var @event = _context.Events.Include(e => e.Activity).OrderBy(e => e.EventFrom).ToList();
+
+            List<Event> week = new List<Event>();
+
+            DateTime today = DateTime.Today;
+            DateTime startOfWeek = today.AddDays(-(int)today.DayOfWeek);
+            startOfWeek = startOfWeek.AddDays(1.0); // Monday
+            DateTime endOfWeek = startOfWeek.AddDays(7); // Sunday
+
+            foreach(var item in @event)
+            {
+                if(item.EventFrom >= startOfWeek && item.EventTo < endOfWeek) // Monday to Sunday
+                {
+                    if(item.IsActive == true)
+                    {
+                        week.Add(item);
+                    }
+                }
+            }
+
+            return week;
         }
 
         // GET: api/EventsApi/5
@@ -37,7 +57,7 @@ namespace ZenithWebsite.Controllers
                 return BadRequest(ModelState);
             }
 
-            Event @event = await _context.Events.SingleOrDefaultAsync(m => m.EventId == id);
+            Event @event = await _context.Events.Include(e => e.Activity).SingleOrDefaultAsync(m => m.EventId == id);
 
             if (@event == null)
             {

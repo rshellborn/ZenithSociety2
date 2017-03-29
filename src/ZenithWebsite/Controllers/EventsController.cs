@@ -47,7 +47,7 @@ namespace ZenithWebsite.Controllers
         // GET: Events/Create
         public IActionResult Create()
         {
-            ViewData["ActivityId"] = new SelectList(_context.Activities, "Description", "Description");
+            ViewData["ActivityId"] = new SelectList(_context.Activities, "ActivityId", "Description");
             return View();
         }
 

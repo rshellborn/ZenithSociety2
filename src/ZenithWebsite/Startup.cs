@@ -146,20 +146,6 @@ namespace ZenithWebsite
 
         }
 
-        public async Task<ClaimsIdentity> GetIdentity(string email, string password)
-        {
-            var result = await _signInManager.PasswordSignInAsync(email, password, false, lockoutOnFailure: false);
-            if (result.Succeeded)
-            {
-                var user = await _userManager.FindByEmailAsync(email);
-                var claims = await _userManager.GetClaimsAsync(user);
-
-                return new ClaimsIdentity(new GenericIdentity(email, "Token"), claims);
-            }
-
-            // Credentials are invalid, or account doesn't exist
-            return null;
-        }
         private async void RolesandUsers(ZenithContext context, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             // Admin Role
