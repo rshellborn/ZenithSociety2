@@ -29,7 +29,7 @@ namespace ZenithWebsite.Controllers
             List<IdentityRoleViewModel> rolesView = new List<IdentityRoleViewModel>();
             foreach (IdentityRole r in roles)
             {
-                rolesView.Add(getViewModelFromModel(r));
+                rolesView.Add(getView(r));
             }
 
             return View(rolesView);
@@ -43,7 +43,7 @@ namespace ZenithWebsite.Controllers
             {
                 return NotFound();
             }
-            var roleView = getViewModelFromModel(role);
+            var roleView = getView(role);
             return View(roleView);
         }
 
@@ -85,7 +85,7 @@ namespace ZenithWebsite.Controllers
             {
                 return NotFound();
             }
-            var roleView = getViewModelFromModel(role);
+            var roleView = getView(role);
             return View(roleView);
         }
 
@@ -127,7 +127,7 @@ namespace ZenithWebsite.Controllers
             {
                 return NotFound();
             }
-            var roleView = getViewModelFromModel(role);
+            var roleView = getView(role);
             return View(roleView);
         }
 
@@ -167,7 +167,7 @@ namespace ZenithWebsite.Controllers
 
         #region Helpers
 
-        private IdentityRoleViewModel getViewModelFromModel(IdentityRole role)
+        private IdentityRoleViewModel getView(IdentityRole role)
         {
             return new IdentityRoleViewModel()
             {

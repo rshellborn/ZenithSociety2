@@ -58,9 +58,16 @@ namespace ZenithWebsite.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(activity);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                if (_context.Activities.Any(m => m.Description == activity.Description))
+                {
+                    ModelState.AddModelError(string.Empty, "This activity already exists.");
+                }
+                else
+                {
+                    _context.Add(activity);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
             }
             return View(activity);
         }
@@ -97,6 +104,12 @@ namespace ZenithWebsite.Controllers
             {
                 try
                 {
+                    if (ActivityExists(activity.Description))
+                    {
+                        ModelState.AddModelError(string.Empty, "This activity already exists.");
+                        return View(activity);
+                    }
+
                     _context.Update(activity);
                     await _context.SaveChangesAsync();
                 }
@@ -147,6 +160,11 @@ namespace ZenithWebsite.Controllers
         private bool ActivityExists(int id)
         {
             return _context.Activities.Any(e => e.ActivityId == id);
+        }
+
+        private bool ActivityExists(string description)
+        {
+            return _context.Activities.Any(e => e.Description.ToLower() == description.ToLower());
         }
     }
 }

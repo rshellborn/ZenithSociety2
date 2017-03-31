@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v1.0/",
-    "signature": "5cd8e7577724149701003498482fb5d1d00a070a"
+    "signature": "9000f6d772dc5b1fcff6a3add7e4efe20993b83a"
   },
   "compilationOptions": {
     "defines": [
@@ -39,8 +39,7 @@
           "Microsoft.Extensions.Logging.Console": "1.0.0",
           "Microsoft.Extensions.Logging.Debug": "1.0.0",
           "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
-          "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0",
-          "Bootstrap.v3.Datetimepicker": "4.17.45"
+          "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0"
         },
         "compile": {
           "ZenithWebsite.dll": {}
@@ -85,17 +84,6 @@
           "lib/netstandard1.6/AspNet.Security.OpenIdConnect.Server.dll": {}
         }
       },
-      "bootstrap.Less/3.3.5": {
-        "dependencies": {
-          "jQuery": "1.9.1"
-        }
-      },
-      "Bootstrap.v3.Datetimepicker/4.17.45": {
-        "dependencies": {
-          "Moment.js": "2.9.0",
-          "bootstrap.Less": "3.3.5"
-        }
-      },
       "CryptoHelper/2.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Cryptography.KeyDerivation": "1.0.0"
@@ -104,7 +92,6 @@
           "lib/netstandard1.3/CryptoHelper.dll": {}
         }
       },
-      "jQuery/1.9.1": {},
       "Libuv/1.9.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.0.1"
@@ -1398,7 +1385,6 @@
           "ref/netstandard1.3/Microsoft.Win32.Registry.dll": {}
         }
       },
-      "Moment.js/2.9.0": {},
       "NETStandard.Library/1.6.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.0.1",
@@ -3061,8 +3047,7 @@
           "Microsoft.Extensions.Logging.Console": "1.0.0",
           "Microsoft.Extensions.Logging.Debug": "1.0.0",
           "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
-          "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0",
-          "Bootstrap.v3.Datetimepicker": "4.17.45"
+          "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0"
         },
         "runtime": {
           "ZenithWebsite.dll": {}
@@ -3107,17 +3092,6 @@
           "lib/netstandard1.6/AspNet.Security.OpenIdConnect.Server.dll": {}
         }
       },
-      "bootstrap.Less/3.3.5": {
-        "dependencies": {
-          "jQuery": "1.9.1"
-        }
-      },
-      "Bootstrap.v3.Datetimepicker/4.17.45": {
-        "dependencies": {
-          "Moment.js": "2.9.0",
-          "bootstrap.Less": "3.3.5"
-        }
-      },
       "CryptoHelper/2.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Cryptography.KeyDerivation": "1.0.0"
@@ -3126,7 +3100,6 @@
           "lib/netstandard1.3/CryptoHelper.dll": {}
         }
       },
-      "jQuery/1.9.1": {},
       "Libuv/1.9.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.0.1"
@@ -4417,7 +4390,6 @@
           "System.Runtime.InteropServices": "4.1.0"
         }
       },
-      "Moment.js/2.9.0": {},
       "NETStandard.Library/1.6.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.0.1",
@@ -5982,25 +5954,10 @@
       "serviceable": true,
       "sha512": "sha512-ZnFka/XmQZa1PRV568uDWMKljlCX0VitVnTpqwH4RZC8yGKQeY8uEuRcD0FivgDtCT9opsAGoLMZFVfFypUJqw=="
     },
-    "bootstrap.Less/3.3.5": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-+xxiEyTJdWwO9G7Ig9gHoXl7grsncyQVy1bhWY9L41fSFUayIZYlziGcwB+ORQDzHAZJrCNa+y1bke11wJy0Ug=="
-    },
-    "Bootstrap.v3.Datetimepicker/4.17.45": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-0/m8BCfhDRhWdiXm8RAHS0lVfaE64/93tDyINtrf4/cBpXGnVU7o5pFP6FhGhelTX7eH0hpLc8+j2obumhI9oA=="
-    },
     "CryptoHelper/2.0.0": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-Be9T+hQDTK51bvqztBO0Iq2bkOE0vE0V44r0hA9VPGi/HafDykThbJhKgHY02QRlx0BhMfNclZVij8nR17vBgQ=="
-    },
-    "jQuery/1.9.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-HiX9icLyiJGgiL5EOIn0d1MBPHVV2M9mzWT4mANdniDNR51RvAFTyKEXEd2+5yQJ4PJ5xePOR61Vjj/omQzYcw=="
     },
     "Libuv/1.9.0": {
       "type": "package",
@@ -6521,11 +6478,6 @@
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-/wVFSb6OKHxfSxsm0qkiv3Nsdy3y3nauOkxR/9ZSfgxCG61nHTm1dRoq6iTzRFNdxPXxxTpUaQzYnDBCGiu0dA=="
-    },
-    "Moment.js/2.9.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-4rhbvFzmgXp/gjvwjxt9Qjmdz+2CD9T99erXEDtZHlYxaI06F9A4628/Vpxklm8D9RmwJjKjp1244FwEh+a5WQ=="
     },
     "NETStandard.Library/1.6.0": {
       "type": "package",

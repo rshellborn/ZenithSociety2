@@ -21,7 +21,22 @@ namespace ZenithWebsite.Controllers
             _context = context;
         }
 
-        // GET: api/EventsApi
+        // GET: api/EventsApi/All -> Eventspage
+        [HttpGet("{all}")]
+        public IEnumerable<Event> GetEvents([FromRoute] string all)
+        {
+            var @event = _context.Events.Include(e => e.Activity);
+            var empty = _context.Events.Take(0);
+
+            if (all == "all")
+            {
+                return @event;
+            }
+
+            return empty;
+        }
+
+        // GET: api/EventsApi -> Homepage
         [HttpGet]
         public IEnumerable<Event> GetEvents()
         {
@@ -34,11 +49,11 @@ namespace ZenithWebsite.Controllers
             startOfWeek = startOfWeek.AddDays(1.0); // Monday
             DateTime endOfWeek = startOfWeek.AddDays(7); // Sunday
 
-            foreach(var item in @event)
+            foreach (var item in @event)
             {
-                if(item.EventFrom >= startOfWeek && item.EventTo < endOfWeek) // Monday to Sunday
+                if (item.EventFrom >= startOfWeek && item.EventTo < endOfWeek) // Monday to Sunday
                 {
-                    if(item.IsActive == true)
+                    if (item.IsActive == true)
                     {
                         week.Add(item);
                     }
@@ -47,6 +62,9 @@ namespace ZenithWebsite.Controllers
 
             return week;
         }
+
+        // GET: api/EventsApi/All -> Eventspage
+
 
         // GET: api/EventsApi/5
         [HttpGet("{id}")]

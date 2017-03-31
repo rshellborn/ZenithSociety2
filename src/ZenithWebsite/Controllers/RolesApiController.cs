@@ -9,7 +9,9 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using ZenithWebsite.Models;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Principal;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ZenithWebsite.Controllers
 {
@@ -33,10 +35,9 @@ namespace ZenithWebsite.Controllers
 
         // GET: api/RolesApi
         [HttpGet]
-        public IEnumerable<IdentityRole> GetRoles()
+        public IEnumerable<IdentityRole> Get()
         {
-
-            return _context.Roles.ToList();
+            return _context.Roles.Include(u => u.Users);
         }
 
         // GET: api/RolesApi/id
@@ -48,7 +49,7 @@ namespace ZenithWebsite.Controllers
                 return BadRequest(ModelState);
             }
 
-            IdentityRole role = _context.Roles.SingleOrDefault(m => m.Id == id);
+            IdentityRole role = await _context.Roles.SingleOrDefaultAsync(m => m.Id == id);
 
             if (role == null)
             {
@@ -56,6 +57,99 @@ namespace ZenithWebsite.Controllers
             }
 
             return Ok(role);
+        }
+
+        // PUT: api/RolesApi/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutActivity([FromRoute] string id, [FromBody] IdentityRole role)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != role.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(role).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!RoleExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+
+        // POST: api/RolesApi
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> PostRole([FromBody] IdentityRole role)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _context.Roles.Add(role);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                if (RoleExists(role.Id))
+                {
+                    return new StatusCodeResult(StatusCodes.Status409Conflict);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtAction("GetRole", new { id = role.Id }, role);
+        }
+
+        // DELETE: api/RolesApi/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteRole([FromRoute] string id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            IdentityRole role = await _context.Roles.SingleOrDefaultAsync(m => m.Id == id);
+
+            if (role == null)
+            {
+                return NotFound();
+            }
+
+            _context.Roles.Remove(role);
+            await _context.SaveChangesAsync();
+
+            return Ok(role);
+        }
+
+        private bool RoleExists(string id)
+        {
+            return _context.Roles.Any(e => e.Id == id);
         }
     }
 }

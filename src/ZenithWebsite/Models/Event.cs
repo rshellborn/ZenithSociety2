@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using ZenithWebsite.Models.CustomValidation;
 
 namespace ZenithWebsite.Models
 {
@@ -18,6 +19,7 @@ namespace ZenithWebsite.Models
 
         [Required(ErrorMessage = "Events must have an ending time.")]
         [Display(Name = "Ending time")]
+        [StartEndDateValidator]
         public DateTime EventTo { get; set; }
 
         [Display(Name = "Creator")]

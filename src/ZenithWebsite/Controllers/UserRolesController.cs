@@ -52,7 +52,7 @@ namespace ZenithWebsite.Controllers
             var user = await _userManager.FindByNameAsync(id);
             var usersRoles = await _userManager.GetRolesAsync(user);
 
-            var viewModel = new EditUserRoleViewModel()
+            var viewModel = new AddUserRoleViewModel()
             {
                 Username = user.UserName,
                 Email = user.Email,
@@ -66,7 +66,7 @@ namespace ZenithWebsite.Controllers
         // POST: UserRoles/AddRole/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AddRole(string id, EditUserRoleViewModel viewModel)
+        public async Task<ActionResult> AddRole(string id, AddUserRoleViewModel viewModel)
         {
 
             if (ModelState.IsValid)
@@ -95,7 +95,7 @@ namespace ZenithWebsite.Controllers
             var user = await _userManager.FindByNameAsync(id);
             var usersRoles = await _userManager.GetRolesAsync(user);
 
-            var viewModel = new EditUserRoleViewModel()
+            var viewModel = new AddUserRoleViewModel()
             {
                 Username = user.UserName,
                 Email = user.Email,
@@ -109,7 +109,7 @@ namespace ZenithWebsite.Controllers
         // POST: UserRoles/DeleteRole/Username
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteRole(string id, EditUserRoleViewModel viewModel)
+        public async Task<ActionResult> DeleteRole(string id, AddUserRoleViewModel viewModel)
         {
             if (ModelState.IsValid)
             {

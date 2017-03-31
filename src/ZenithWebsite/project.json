@@ -48,8 +48,8 @@
     "Microsoft.VisualStudio.Web.CodeGenerators.Mvc": {
       "version": "1.0.0-preview2-final",
       "type": "build"
-    },
-    "Bootstrap.v3.Datetimepicker": "4.17.45" },
+    }
+  },
 
   "tools": {
     "BundlerMinifier.Core": "2.0.238",

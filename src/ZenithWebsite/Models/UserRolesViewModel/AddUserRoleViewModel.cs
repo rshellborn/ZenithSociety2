@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ZenithWebsite.Models.UserRolesViewModel
 {
-    public class EditUserRoleViewModel
+    public class AddUserRoleViewModel
     {
         [Display(Name = "Username")]
         public string Username { get; set; }

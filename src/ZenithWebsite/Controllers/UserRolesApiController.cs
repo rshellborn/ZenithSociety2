@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using ZenithWebsite.Models;
 using System.Security.Claims;
 using System.Security.Principal;
+using Microsoft.EntityFrameworkCore;
 
 namespace ZenithWebsite.Controllers
 {
@@ -37,7 +38,7 @@ namespace ZenithWebsite.Controllers
         [HttpGet]
         public IEnumerable<ApplicationUser> GetUsers()
         {
-            return _context.Users.ToList();
+            return _context.Users.Include(r => r.Roles);
         }
 
         // GET: api/UsersApi/id
@@ -49,7 +50,7 @@ namespace ZenithWebsite.Controllers
                 return BadRequest(ModelState);
             }
 
-            ApplicationUser user = _context.Users.SingleOrDefault(m => m.Id == id);
+            ApplicationUser user = await _context.Users.SingleOrDefaultAsync(m => m.Id == id);
 
             if (user == null)
             {
