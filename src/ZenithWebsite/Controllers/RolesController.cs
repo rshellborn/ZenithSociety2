@@ -106,6 +106,12 @@ namespace ZenithWebsite.Controllers
                     return View(roleView);
                 }
 
+                if (role.NormalizedName == "MEMBER")
+                {
+                    ModelState.AddModelError(string.Empty, "Member cannot be edited");
+                    return View(roleView);
+                }
+
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index");
@@ -147,6 +153,12 @@ namespace ZenithWebsite.Controllers
             if (role.NormalizedName == "ADMIN")
             {
                 ModelState.AddModelError(String.Empty, "Admin cannot be deleted.");
+                return View(viewModel);
+            }
+
+            if (role.NormalizedName == "MEMBER")
+            {
+                ModelState.AddModelError(String.Empty, "Member cannot be deleted.");
                 return View(viewModel);
             }
 

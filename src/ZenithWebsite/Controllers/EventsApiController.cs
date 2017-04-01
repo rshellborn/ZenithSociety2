@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ZenithWebsite.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace ZenithWebsite.Controllers
 {
@@ -15,7 +17,6 @@ namespace ZenithWebsite.Controllers
     public class EventsApiController : Controller
     {
         private readonly ZenithContext _context;
-
         public EventsApiController(ZenithContext context)
         {
             _context = context;
@@ -23,17 +24,66 @@ namespace ZenithWebsite.Controllers
 
         // GET: api/EventsApi/All -> Eventspage
         [HttpGet("{all}")]
-        public IEnumerable<Event> GetEvents([FromRoute] string all)
+        public async Task<IActionResult> GetAllEvent([FromRoute] string all)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var @event = _context.Events.Include(e => e.Activity);
-            var empty = _context.Events.Take(0);
+
+            var weekevent = _context.Events.Include(e => e.Activity).OrderBy(e => e.EventFrom).ToList();
+
+            List<Event> CurrentWeek = new List<Event>();
+            List<Event> NextWeek = new List<Event>();
+            List<Event> PrevWeek = new List<Event>();
+
+            DateTime today = DateTime.Today;
+            DateTime startOfWeek = today.AddDays(-(int)today.DayOfWeek);
+            startOfWeek = startOfWeek.AddDays(1); // Monday
+            DateTime endOfWeek = startOfWeek.AddDays(7); // Sunday
+            DateTime startOfPreviousWeek = startOfWeek.AddDays(-7); // Last Monday
+            DateTime endOfPrevWeek = endOfWeek.AddDays(-7); // Last Sunday
+            DateTime startOfNextWeek = startOfWeek.AddDays(7); // Next Monday
+            DateTime endOfNextWeek = endOfWeek.AddDays(7); ; // Next Sunday
+
+            foreach (var item in weekevent)
+            {
+                if (item.EventFrom >= startOfPreviousWeek && item.EventTo < endOfPrevWeek) // Prev Week
+                {
+                    if (item.IsActive == true)
+                    {
+                        PrevWeek.Add(item);
+                    }
+                }
+            }
+
+            foreach (var item in weekevent)
+            {
+                if (item.EventFrom >= startOfNextWeek && item.EventTo < endOfNextWeek) // Next Sunday
+                {
+                    if (item.IsActive == true)
+                    {
+                        NextWeek.Add(item);
+                    }
+                }
+            }
 
             if (all == "all")
             {
-                return @event;
+                return Ok(@event);
+            }
+            else if (all == "prevweek")
+            {
+                return Ok(PrevWeek);
+            }
+            else if (all == "nextweek")
+            {
+                return Ok(NextWeek);
             }
 
-            return empty;
+            return NotFound();
         }
 
         // GET: api/EventsApi -> Homepage
@@ -62,8 +112,6 @@ namespace ZenithWebsite.Controllers
 
             return week;
         }
-
-        // GET: api/EventsApi/All -> Eventspage
 
 
         // GET: api/EventsApi/5

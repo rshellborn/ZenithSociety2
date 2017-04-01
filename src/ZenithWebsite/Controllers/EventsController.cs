@@ -17,7 +17,7 @@ namespace ZenithWebsite.Controllers
 
         public EventsController(ZenithContext context)
         {
-            _context = context;    
+            _context = context;
         }
 
         // GET: Events
@@ -92,7 +92,7 @@ namespace ZenithWebsite.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EventId,ActivityId,CreationDate,EnteredBy,EventFrom,EventTo,IsActive")] Event @event)
+        public async Task<IActionResult> Edit(int id, [Bind("EventId,ActivityId,CreationDate,EventFrom,EventTo,IsActive")] Event @event)
         {
             if (id != @event.EventId)
             {
@@ -103,6 +103,7 @@ namespace ZenithWebsite.Controllers
             {
                 try
                 {
+                    @event.EnteredBy = HttpContext.User.Identity.Name;
                     _context.Update(@event);
                     await _context.SaveChangesAsync();
                 }

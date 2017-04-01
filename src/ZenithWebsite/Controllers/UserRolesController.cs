@@ -31,14 +31,15 @@ namespace ZenithWebsite.Controllers
             var users = _userManager.Users.ToList();
 
             var usersView = new List<UserRolesViewModel>();
-            foreach (ApplicationUser usr in users)
+            foreach (ApplicationUser user in users)
             {
-                var roles = await _userManager.GetRolesAsync(usr);
+                var roles = await _userManager.GetRolesAsync(user);
                 var userView = new UserRolesViewModel()
                 {
-                    Username = usr.UserName,
-                    Email = usr.Email,
+                    Username = user.UserName,
+                    Email = user.Email,
                     Roles = roles
+
                 };
                 usersView.Add(userView);
             }
@@ -116,6 +117,13 @@ namespace ZenithWebsite.Controllers
                 if (viewModel.Username == "a" && viewModel.SelectedRole.ToUpper() == "ADMIN")
                 {
                     ModelState.AddModelError(string.Empty, "User 'a' cannot be removed from Admin");
+                    ViewData["AllRoles"] = new SelectList(_roleManager.Roles, "Name", "Name");
+                    return View(viewModel);
+                }
+
+                if (viewModel.Username == "m" && viewModel.SelectedRole.ToUpper() == "MEMBER")
+                {
+                    ModelState.AddModelError(string.Empty, "User 'm' cannot be removed from MEMBER");
                     ViewData["AllRoles"] = new SelectList(_roleManager.Roles, "Name", "Name");
                     return View(viewModel);
                 }

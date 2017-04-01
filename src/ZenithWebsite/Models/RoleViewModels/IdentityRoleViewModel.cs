@@ -20,5 +20,6 @@ namespace ZenithWebsite.Models.RoleViewModels
         [ReadOnly(true)]
         [Display(Name = "Role Name")]
         public string NormalizedName { get; set; }
+
     }
 }
